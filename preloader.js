@@ -9,11 +9,11 @@
     preload: function() {
       this.stage.backgroundColor = '#DDDDDD';
       // Load sprites
-      // this.load.image('titlescreen', 'assets/title_screen.png');
+     this.load.image('floor', 'assets/floor.png');
 
 
       // Sprite Sheets
-      // this.load.spritesheet('fan_top', 'assets/fan_top.png', 192, 102);
+      this.load.spritesheet('bear', 'assets/bear.png', 128, 78);
 
 
       // Tile Map
@@ -26,6 +26,14 @@
 
     create: function() {
       console.log('preloader create');
+      //scaling options
+      this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+      this.scale.minWidth = 240;
+      this.scale.minHeight = 170;
+      this.scale.maxWidth = 2880;
+      this.scale.maxHeight = 1920;
+
+
       this.state.start('Game');
     }
   };

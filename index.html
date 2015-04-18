@@ -9,6 +9,7 @@
   <script type="text/javascript" src="preloader.js"></script>
   <script type="text/javascript" src="menu.js"></script>
   <script type="text/javascript" src="level.js"></script>
+  <script type="text/javascript" src="player.js"></script>
   <script type="text/javascript" src="gameover.js"></script>
   <script type="text/javascript" src="gamewon.js"></script>
   <script type="text/javascript" src="game.js"></script>
@@ -26,7 +27,12 @@
 (function() {
   'use strict';
 
-  var game = new Phaser.Game(800, 480, Phaser.AUTO, 'game');
+  var innerWidth = window.innerWidth;
+  var innerHeight = window.innerHeight;
+  var gameRatio = innerWidth/innerHeight;
+  var game = new Phaser.Game(Math.ceil(480*gameRatio), 480, Phaser.CANVAS, 'game');
+
+  // var game = new Phaser.Game(800, 480, Phaser.AUTO, 'game');
   game.state.add('Boot', LD.BootState);
   game.state.add('Preloader', LD.PreloaderState);
   game.state.add('Menu', LD.MenuState);

@@ -10,10 +10,10 @@
     create: function() {
       this.level = new LD.Level(this);
 
-      // this.player = new LD.Player(this);
+      this.player = new LD.Player(this);
 
       this.level.add();
-      // this.game.world.add(this.player);
+      this.game.world.add(this.player);
     },
 
     render: function() {
