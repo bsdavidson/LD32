@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="200" height="40" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32">
+  <image source="tileset.png" trans="ff0099" width="800" height="480"/>
+ </tileset>
+ <layer name="Background" width="200" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztwwENAAAMw6DqmH+hvxBIWDVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVXVf7aBLK4=
+  </data>
+ </layer>
+ <layer name="Platform" width="200" height="40">
+  <data encoding="base64" compression="zlib">
+   eJzt1UEOgzAMBED+wV/br/dUqUKEhjTGLhqkucLascO6LMsKAAAAAAAAAAAAAAAAhVz1ZNcJLVWe7D5AFa0nOxcAAAAAAAAAwBnPjew83NN2zqrP2zvfYyM7F/ezN2dv1XaltRf2g9m+zVprVypnze7pUfYj2Rkr6elXVM8+39+7F0f/lNl5W+/uzZZ9tns1nO3pv8/YVXP5aw2/zNmICvmyz3lNrmHWfRK9XzPPfTRP5C6M7nP0rs6Y77PzMHvHe2dzxv2yV9fIHd7bs+h7uvf70f+K3oxX9eXbec26eyvcQxEi68nuVfb3e7Jl55h199qPsd7bj+Ns2Tkien2n2qLrsR/1+hLd6zvVZj9ys131vRdTzBxy
+  </data>
+ </layer>
+</map>

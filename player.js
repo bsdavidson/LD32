@@ -3,7 +3,7 @@
 
   LD.Player = function(gameState) {
     Phaser.Sprite.call(this, gameState.game, 90,
-      gameState.game.world.height - 32, 'bear');
+      30, 'player');
     this.gameState = gameState;
 
     this.startX = 100;
@@ -35,6 +35,7 @@
   LD.Player.prototype.update = function() {
     this.game.physics.arcade.collide(this, this.gameState.level.platforms);
 
+    this.game.physics.arcade.collide(this, this.gameState.level.layer[1]);
 
 
     if (!this.controlDisabled) {
@@ -58,11 +59,15 @@
         this.frame = 0;
       }
 
-      if (this.game.controls.up.isDown && this.body.touching.down) {
+      if (this.game.controls.up.isDown) {
         // console.log('LEFT!');
         this.body.velocity.y = -350;
         this.animations.play('walk');
         this.frame = 0;
+      }
+
+      if (this.game.controls.fire.isDown) {
+        console.log('FIRE');
       }
     }
   };
