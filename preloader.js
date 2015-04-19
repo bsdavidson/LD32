@@ -12,11 +12,14 @@
      this.load.image('floor', 'assets/floor.png');
      this.load.image('tiles', 'assets/tileset.png');
      this.load.image('blood_drop', 'assets/blood_drop.png');
+     this.load.image('gib_head', 'assets/gib_head.png');
+     this.load.image('gib_leg', 'assets/gib_leg.png');
+     this.load.image('gib_case', 'assets/gib_case.png');
 
 
 
       // Sprite Sheets
-      this.load.spritesheet('bear', 'assets/bear.png', 128, 78);
+      this.load.spritesheet('bear', 'assets/bear.png', 116, 76);
       this.load.spritesheet('player_bear', 'assets/bear_rider.png', 128, 104);
       this.load.spritesheet('player', 'assets/player.png', 32, 44);
       this.load.spritesheet('bee', 'assets/bee.png', 32, 22);

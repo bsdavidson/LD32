@@ -1,8 +1,7 @@
-(function() {
+(function () {
   'use strict';
 
-
-  LD.Bear = function(gameState) {
+  LD.Bear = function (gameState) {
     Phaser.Sprite.call(this, gameState.game, 300,
       gameState.game.world.height - 50, 'bear');
 
@@ -25,48 +24,48 @@
     this.acceleration = 1200;
 
     this.animations.add('run', [0, 1, 2, 3, 4], 5, true);
-    this.run();
+    this.animations.stop();
+    this.frame = 5;
   };
 
   LD.Bear.prototype = Object.create(Phaser.Sprite.prototype);
   LD.Bear.prototype.constructor = LD.Bear;
 
-  LD.Bear.prototype.update = function() {
+  LD.Bear.prototype.update = function () {
     var platforms = this.gameState.level.platforms;
     this.game.physics.arcade.collide(this, platforms);
     this.game.physics.arcade.collide(this, this.gameState.level.layer[2]);
 
-
     if (this.body.touching.down) {
-      this.run();
+      this.animations.stop();
+      this.frame = 5;
     }
 
   };
 
-
-  LD.Bear.prototype.run = function() {
-      this.direction = 1;
-      this.scale.x = -1;
+  LD.Bear.prototype.run = function () {
+    this.direction = 1;
+    this.scale.x = -1;
 
     // this.body.setSize(43, 35, -7, -5);
     this.body.velocity.x = 10 * this.direction;
     this.animations.play('run');
   };
 
-
   // BEEEEEEESSSSS!!!!!
 
-  LD.Bee = function(gameState) {
-   Phaser.Sprite.call(this, gameState.game, gameState.game.rnd.integerInRange(0, 360),
+  LD.Bee = function (gameState) {
+    Phaser.Sprite.call(this, gameState.game, gameState.game.rnd.integerInRange(0, 360),
       gameState.game.rnd.integerInRange(0, 360), 'bee');
     this.kill();
     this.beePool = this.game.add.group();
     this.beePool.enableBody = true;
     this.beePool.physicsBodyType = Phaser.Physics.ARCADE;
-    this.beePool.createMultiple(10, 'bee');
+    this.game.physics.arcade.enable(this.beePool);
+    this.beePool.createMultiple(5, 'bee');
 
     this.beePool.forEach(function (bee) {
-     bee.animations.add('fly', [0, 1, 2], 20, true);
+      bee.animations.add('fly', [0, 1, 2], 20, true);
     }, this);
 
     this.gameState = gameState;
@@ -79,35 +78,36 @@
 
   };
 
-
   LD.Bee.prototype = Object.create(Phaser.Sprite.prototype);
   LD.Bee.constructor = LD.Bee;
 
-  LD.Bee.prototype.update = function() {
+  LD.Bee.prototype.update = function () {
     this.game.physics.arcade.collide(this, this.gameState.level.layer[2]);
 
+    var bee = this.beePool.getFirstExists(false);
+    // spawn at a random location top of the screen
+    if (bee) {
+      bee.reset(this.gameState.player.x, this.gameState.player.y - 50);
+      // also randomize the speed
+      // enemy.body.velocity.y = this.game.rnd.integerInRange(500 );
+      bee.play('fly');
+    }
 
-      var bee = this.beePool.getFirstExists(false);
-      // spawn at a random location top of the screen
-      if(bee) {
-        bee.reset(this.gameState.player.x , this.gameState.player.y - 50 );
-        // also randomize the speed
-        // enemy.body.velocity.y = this.game.rnd.integerInRange(500 );
-        bee.play('fly');
+    this.beePool.forEach(function (bee) {
+
+      if (this.phy.distanceToXY(bee, this.gameState.player.x, this.gameState.player.y) > 150 ||
+        this.phy.distanceToXY(bee, this.gameState.player.x, this.gameState.player.y) < -150) {
+        this.phy.moveToXY(bee, Math.round(this.gameState.player.x - this.game.rnd.integerInRange(10, 100)),
+          Math.round(this.gameState.player.y - this.game.rnd.integerInRange(10, 100)), 300);
       }
 
+      this.game.debug.body(bee);
 
-      this.beePool.forEach(function (bee) {
+      this.phy.overlap(bee, this.gameState.enemyPool, function () {
+        console.log('POW');
+      }, null, this);
 
-
-
-
-         if (this.phy.distanceToXY(bee, this.gameState.player.x, this.gameState.player.y) > 150 ||
-                this.phy.distanceToXY(bee, this.gameState.player.x, this.gameState.player.y) < -150) {
-            this.phy.moveToXY(bee, Math.round(this.gameState.player.x - 50), Math.round(this.gameState.player.y - 20) , 300);
-          }
-
-      if (bee.body.deltaX() > 0){
+      if (bee.body.deltaX() > 0) {
         bee.scale.x = -0.5;
         bee.scale.y = 0.5;
       } else {
@@ -116,36 +116,24 @@
 
       }
 
-
-
-      }, this, 200);
-
-
-
-
-    if (this.phy.distanceToXY(this, this.gameState.player.x, this.gameState.player.y) > 150 ||
-        this.phy.distanceToXY(this, this.gameState.player.x, this.gameState.player.y) < -150) {
-    this.phy.moveToXY(this, Math.round(this.gameState.player.x - 50), Math.round(this.gameState.player.y - 20) , 300);
-  }
+    }, this, 200);
   };
 
-
-
-
-  LD.Enemy = function(gameState) {
+  LD.Enemy = function (gameState) {
     Phaser.Sprite.call(this, gameState.game, 300,
-     gameState.game.world.height - 400, 'enemy1');
+      gameState.game.world.height - 400, 'enemy1');
 
     this.gameState = gameState;
     this.kill();
     // this.game.physics.arcade.enable(this);
     this.phy = this.game.physics.arcade;
 
-    this.emitter = this.game.add.emitter(0, 0, 100);
-    this.emitter.makeParticles('blood_drop');
-    this.emitter.gravity = 100;
-    this.emitter.setAlpha(1, 0, 3000);
+    this.emitter = this.game.add.emitter(0, 0, 20);
+    this.emitter.makeParticles(['blood_drop', 'gib_leg', 'gib_case']);
+    this.emitter.gravity = 200;
+    this.emitter.setAlpha(1, 0, 2000);
 
+    this.emitterPool = this.game.add.group();
 
     this.enemyPool = this.game.add.group();
     this.enemyPool.enableBody = true;
@@ -157,38 +145,39 @@
     this.enemyPool.setAll('checkWorldBounds', true);
     this.enemyPool.setAll('bounce', 0.3);
     this.enemyPool.setAll('body.gravity.y', 1900);
+    this.phy.enable(this.enemyPool);
 
     // Set the animation for each sprite
     this.enemyPool.forEach(function (enemy) {
-      enemy.animations.add('attack', [ 0, 1, 2, 3, 4, 5, 6 ], 20, true);
-      enemy.animations.add('die', [ 7, 8, 9, 10 ], 20, false);
+      enemy.animations.add('attack', [0, 1, 2, 3, 4, 5, 6], 20, true);
+      enemy.animations.add('die', [7, 8, 9, 10], 20, false);
 
     }, this);
 
     this.nextEnemyAt = 0;
-    this.enemyDelay = 4000;
+    this.enemyDelay = 2000;
 
   };
-
 
   LD.Enemy.prototype = Object.create(Phaser.Sprite.prototype);
   LD.Enemy.constructor = LD.Enemy;
 
-  LD.Enemy.prototype.update = function() {
+  LD.Enemy.prototype.update = function () {
     this.phy.collide(this, this.gameState.level.layer[2]);
     this.phy.collide(this.enemyPool, this.gameState.level.layer[2]);
     this.phy.collide(this.emitter, this.gameState.level.layer[2]);
+    this.phy.collide(this.enemyPool, this.gameState.beePool);
 
     if (this.nextEnemyAt < this.game.time.now && this.enemyPool.countDead() > 0) {
       this.nextEnemyAt = this.game.time.now + this.enemyDelay;
       var enemy = this.enemyPool.getFirstExists(false);
       // spawn at a random location top of the screen
-      enemy.reset(this.gameState.player.x + 400, this.gameState.player.y - 50 );
+      enemy.reset(this.gameState.player.x + 1400, this.gameState.player.y - 550);
+      enemy.health = 100;
       // also randomize the speed
       // enemy.body.velocity.y = this.game.rnd.integerInRange(500 );
       enemy.play('attack');
     }
-
 
     this.enemyPool.forEach(function (enemy) {
       if (enemy.body.blocked.down) {
@@ -200,28 +189,36 @@
       }
 
       if ((!enemy.body.blocked.down && enemy.hasTouched && enemy.body.deltaY() > 0 && !enemy.isJumping) ||
-          (enemy.body.blocked.left || enemy.body.blocked.right)
-          ) {
-         enemy.isJumping = true;
-         enemy.body.velocity.y = -650;
+        (enemy.body.blocked.left || enemy.body.blocked.right)
+      ) {
+        enemy.isJumping = true;
+        enemy.body.velocity.y = -650;
 
-         if (enemy.x > this.gameState.player.x) {
-            enemy.body.velocity.x = -200;
-          } else {
-            enemy.body.velocity.x = 200;
-       }
+        if (enemy.x > this.gameState.player.x) {
+          enemy.body.velocity.x = -200;
+        } else {
+          enemy.body.velocity.x = 200;
+        }
       }
 
-       if (enemy.body.deltaX() > 0){
-          enemy.scale.x = 1;
-        } else {
-          enemy.scale.x = -1;
-        }
+      if (enemy.body.deltaX() > 0) {
+        enemy.scale.x = 1;
+      } else {
+        enemy.scale.x = -1;
+      }
 
-      this.phy.overlap(enemy, this.gameState.player, function() {
+      this.phy.overlap(enemy, this.gameState.player, function () {
+        this.gameState.player.health -= 0.2;
         if (this.game.controls.fire.isDown) {
-          this.explode(enemy.x, enemy.y);
-          enemy.kill();
+          enemy.health -= 30;
+          if (enemy.health < 0) {
+            this.explode(enemy.x, enemy.y);
+            enemy.kill();
+          } else {
+            console.log('POW');
+            enemy.body.velocity.x = 400;
+            enemy.body.velocity.y = -300;
+          }
         }
       }, null, this);
 
@@ -231,12 +228,10 @@
 
   };
 
-  LD.Enemy.prototype.explode = function(x, y) {
+  LD.Enemy.prototype.explode = function (x, y) {
     this.emitter.x = x;
     this.emitter.y = y;
-    this.emitter.start(true, 3000, null, 200);
+    this.emitter.start(true, 4000, null, 100);
   };
-
-
 
 }());

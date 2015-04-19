@@ -23,13 +23,14 @@
 
 
 
+
     this.game.physics.arcade.enable(this.layer[2], Phaser.Physics.ARCADE, true);
     this.platforms = this.game.make.group();
     this.platforms.enableBody = true;
 
     this.map.setCollisionBetween(1, 2, true, this.layer[2]);
-    this.map.setCollisionBetween(26, 27, true, this.layer[2]);
-    this.map.setCollisionBetween(51, 52, true, this.layer[2]);
+    this.map.setCollisionBetween(26, 28, true, this.layer[2]);
+    this.map.setCollisionBetween(51, 53, true, this.layer[2]);
     this.map.setCollisionBetween(124, 126, true, this.layer[2]);
 
 

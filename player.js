@@ -18,6 +18,14 @@
     this.anchor.setTo(0.5, 1);
 
     this.riding = false;
+    this.health = 100;
+
+
+    //Assigned for later use
+    this.health_text = this.game.add.text(150, 40, "Health " + this.health);
+    //Center the text
+    this.health_text.fixedToCamera = true;
+    this.health_text.anchor.set(0.5, 0.5);
 
 
     this.body.collideWorldBounds = true;
@@ -46,6 +54,9 @@
     this.game.physics.arcade.collide(this, this.gameState.level.platforms);
 
     this.game.physics.arcade.collide(this, this.gameState.level.layer[2]);
+   // this.game.debug.body(this);
+
+   this.health_text.setText('Health ' + this.health);
 
     this.game.physics.arcade.overlap(this, this.gameState.bear, function() {
 
