@@ -1,0 +1,25 @@
+{
+  "name": "LD32",
+  "version": "0.1.0",
+  "description": "Ludum Dare 32",
+  "engines": {
+    "node": "0.12.x"
+  },
+  "scripts": {
+    "start": "http-server -p ${PORT-8080}",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bsdavidson/LD32.git"
+  },
+  "author": "Brian Davidson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bsdavidson/LD32/issues"
+  },
+  "homepage": "https://github.com/bsdavidson/LD32",
+  "dependencies": {
+    "http-server": "^0.8.0"
+  }
+}

@@ -23,6 +23,7 @@
 
     this.animations.add('walk', [0, 1, 2, 3, 4, 5, 6, 7], 16, true);
     this.animations.add('bear_walk', [0, 1, 2, 3, 4], 16, true);
+    this.animations.add('bear_swipe', [5, 6, 7, 8, 9], 16, true);
 
 
     this.game.cursors = this.game.input.keyboard.createCursorKeys();
@@ -60,22 +61,33 @@
       if (this.game.controls.left.isDown) {
         // console.log('LEFT!');
         this.body.velocity.x = -150;
-        if (this.riding) {
-          this.animations.play('bear_walk');
-        } else {
-          this.animations.play('walk');
-        }
         this.scale.x = 1;
         this.scale.x = -1;
       } else if (this.game.controls.right.isDown) {
         this.body.velocity.x = 150;
+        this.scale.x = 1;
+      } else if (this.game.controls.down.isDown) {
+        this.body.velocity.x = 0;
+       } else {
+        this.body.velocity.x = 0;
+       }
+      }
+
+      if (!this.controlDisabled ) {
+        if (this.game.controls.left.isDown && !this.game.controls.fire.isDown) {
+          if (this.riding) {
+            this.animations.play('bear_walk');
+          } else {
+            this.animations.play('walk');
+          }
+        } else if (this.game.controls.right.isDown && !this.game.controls.fire.isDown) {
+
         if (this.riding) {
           this.animations.play('bear_walk');
         } else {
           this.animations.play('walk');
         }
-        this.scale.x = 1;
-      } else if (this.game.controls.down.isDown) {
+      } else if (this.game.controls.down.isDown && !this.game.controls.fire.isDown) {
         // console.log('duck!');
         this.animations.stop();
         if (this.riding) {
@@ -84,13 +96,15 @@
           this.frame = 8;
         }
       } else {
-        this.body.velocity.x = 0;
-        this.animations.stop();
+        if (!this.game.controls.fire.isDown) {
+          this.animations.stop();
+
          if (this.riding) {
           this.frame = 9;
         } else {
           this.frame = 8;
         }
+       }
       }
 
       if (this.game.controls.up.isDown && this.body.blocked.down) {
@@ -116,9 +130,23 @@
 
 
       if (this.game.controls.fire.isDown) {
-        console.log('FIRE');
+        if (this.riding) {
+          this.swipe();
+        } else {
+          console.log('FREEZE');
+          this.frame = 8;
+        }
+
+
       }
     }
   };
+
+   LD.Player.prototype.swipe = function() {
+
+    console.log('Bear Swipe!');
+    this.animations.play('bear_swipe');
+  };
+
 
 }());

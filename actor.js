@@ -86,7 +86,7 @@
 
     }
 
-    this.game.physics.arcade.moveToPointer(this, 60, this.gameState.player.sprite, 500);
+    this.game.physics.arcade.moveToXY(this, Math.round(this.gameState.player.x - 100), Math.round(this.gameState.player.y - 130) , 200);
   };
 
 
