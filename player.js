@@ -21,6 +21,11 @@
     this.health = 100;
     this.facing = 1;
 
+    this.fart_emitter = this.game.add.emitter(0, 0, 10);
+    this.fart_emitter.makeParticles(['fart_bubble']);
+    this.fart_emitter.gravity = -120;
+    this.fart_emitter.setAlpha(0.5, 0, 2000);
+
     this.fart = this.game.add.audio('fart');
     //Assigned for later use
     this.health_text = this.game.add.text(100, 40, "Health " + this.health);
@@ -206,6 +211,7 @@
       if (this.fart_ammo > 0) {
         this.fart_ammo -= 1;
       this.fart.play();
+      this.fart_bubbles(this.x, this.y);
        this.gameState.enemy.enemyPool.forEach(function (enemy) {
         enemy.health = 0;
        }, this, 200);
@@ -217,6 +223,12 @@
       }, this);
 
    }
+  };
+
+  LD.Player.prototype.fart_bubbles = function (x, y) {
+    this.fart_emitter.x = x - 50;
+    this.fart_emitter.y = y - 30;
+    this.fart_emitter.start(true, 2000, null, 100);
   };
 
 

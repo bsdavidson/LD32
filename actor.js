@@ -140,7 +140,7 @@
     this.enemyPool = this.game.add.group();
     this.enemyPool.enableBody = true;
     this.enemyPool.physicsBodyType = Phaser.Physics.ARCADE;
-    this.enemyPool.createMultiple(50, 'enemy1');
+    this.enemyPool.createMultiple(60, 'enemy1');
     this.enemyPool.setAll('anchor.x', 0.5);
     this.enemyPool.setAll('anchor.y', 0.5);
     this.enemyPool.setAll('outOfBoundsKill', true);
@@ -174,7 +174,7 @@
       this.nextEnemyAt = this.game.time.now + this.enemyDelay;
       var enemy = this.enemyPool.getFirstExists(false);
       // spawn at a random location top of the screen
-      enemy.reset(this.gameState.player.x + 1400, this.gameState.player.y - 550);
+      enemy.reset((this.game.camera.position.x * 2) + 50, 0);
       enemy.health = 100;
       enemy.alive = true;
       // also randomize the speed

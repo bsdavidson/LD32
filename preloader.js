@@ -12,6 +12,7 @@
      this.load.image('floor', 'assets/floor.png');
      this.load.image('tiles', 'assets/tileset.png');
      this.load.image('blood_drop', 'assets/blood_drop.png');
+     this.load.image('fart_bubble', 'assets/fart_bubble.png');
      this.load.image('gib_head', 'assets/gib_head.png');
      this.load.image('gib_leg', 'assets/gib_leg.png');
      this.load.image('gib_case', 'assets/gib_case.png');
