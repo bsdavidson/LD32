@@ -57,6 +57,7 @@
   LD.Bee = function (gameState) {
     Phaser.Sprite.call(this, gameState.game, gameState.game.rnd.integerInRange(0, 360),
       gameState.game.rnd.integerInRange(0, 360), 'bee');
+    this.gameState = gameState;
     this.kill();
     this.beePool = this.game.add.group();
     this.beePool.enableBody = true;
@@ -72,6 +73,8 @@
 
     this.game.physics.arcade.enable(this);
     this.phy = this.game.physics.arcade;
+
+
     // this.roar = this.game.add.audio('roar');\\
     this.body.collideWorldBounds = false;
     // this.body.bounce(0.50);
@@ -82,30 +85,32 @@
   LD.Bee.constructor = LD.Bee;
 
   LD.Bee.prototype.update = function () {
-    this.game.physics.arcade.collide(this, this.gameState.level.layer[2]);
-
-    var bee = this.beePool.getFirstExists(false);
-    // spawn at a random location top of the screen
-    if (bee) {
-      bee.reset(this.gameState.player.x, this.gameState.player.y - 50);
-      // also randomize the speed
-      // enemy.body.velocity.y = this.game.rnd.integerInRange(500 );
-      bee.play('fly');
-    }
+    this.phy.collide(this.beePool, this.gameState.level.layer[2]);
+    this.phy.collide(this.beePool, this.beePool);
 
     this.beePool.forEach(function (bee) {
 
-      if (this.phy.distanceToXY(bee, this.gameState.player.x, this.gameState.player.y) > 150 ||
-        this.phy.distanceToXY(bee, this.gameState.player.x, this.gameState.player.y) < -150) {
-        this.phy.moveToXY(bee, Math.round(this.gameState.player.x - this.game.rnd.integerInRange(10, 100)),
-          Math.round(this.gameState.player.y - this.game.rnd.integerInRange(10, 100)), 300);
+      var enemy = this.gameState.enemy.enemyPool.getFirstAlive();
+
+      if (enemy) {
+        if (this.phy.distanceToXY(bee, enemy.x, enemy.y) > 5 ||
+          this.phy.distanceToXY(bee, enemy.x, enemy.y) < -5) {
+          this.phy.moveToXY(bee, enemy.x, enemy.y, 300);
+        }
+       }
+
+      if (bee.health <= 0) {
+        bee.gravity = 100;
+        bee.body.velocity.x = 0;
+        bee.body.velocity.y = 50;
+        bee.animations.stop();
+        bee.scale.y = -0.5;
+        if(bee.body.blocked.down) {
+            bee.kill();
+          }
       }
 
-      this.game.debug.body(bee);
 
-      this.phy.overlap(bee, this.gameState.enemyPool, function () {
-        console.log('POW');
-      }, null, this);
 
       if (bee.body.deltaX() > 0) {
         bee.scale.x = -0.5;
@@ -150,7 +155,7 @@
     // Set the animation for each sprite
     this.enemyPool.forEach(function (enemy) {
       enemy.animations.add('attack', [0, 1, 2, 3, 4, 5, 6], 20, true);
-      enemy.animations.add('die', [7, 8, 9, 10], 20, false);
+      enemy.animations.add('die', [7, 8, 9, 10, 10,10,10,10], 10, false);
 
     }, this);
 
@@ -166,7 +171,7 @@
     this.phy.collide(this, this.gameState.level.layer[2]);
     this.phy.collide(this.enemyPool, this.gameState.level.layer[2]);
     this.phy.collide(this.emitter, this.gameState.level.layer[2]);
-    this.phy.collide(this.enemyPool, this.gameState.beePool);
+
 
     if (this.nextEnemyAt < this.game.time.now && this.enemyPool.countDead() > 0) {
       this.nextEnemyAt = this.game.time.now + this.enemyDelay;
@@ -174,6 +179,7 @@
       // spawn at a random location top of the screen
       enemy.reset(this.gameState.player.x + 1400, this.gameState.player.y - 550);
       enemy.health = 100;
+      enemy.alive = true;
       // also randomize the speed
       // enemy.body.velocity.y = this.game.rnd.integerInRange(500 );
       enemy.play('attack');
@@ -207,6 +213,7 @@
         enemy.scale.x = -1;
       }
 
+
       this.phy.overlap(enemy, this.gameState.player, function () {
         this.gameState.player.health -= 0.2;
         if (this.game.controls.fire.isDown) {
@@ -222,7 +229,23 @@
         }
       }, null, this);
 
+
+      if (enemy.health <= 0 && enemy.alive) {
+        enemy.alive = false;
+        console.log("DIE BITCH");
+        enemy.animations.play('die');
+        enemy.body.velocity.x = 0;
+        enemy.events.onAnimationComplete.add(function(){
+        console.log("complete");
+          enemy.kill();
+      }, this);
+
+      }
+
+
     }, this, 200);
+
+
 
     // console.log(this.gameState.player.y, this.gameState.player.x);
 

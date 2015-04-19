@@ -19,6 +19,7 @@
 
     this.riding = false;
     this.health = 100;
+    this.facing = 1;
 
 
     //Assigned for later use
@@ -35,6 +36,7 @@
     this.animations.add('walk', [0, 1, 2, 3, 4, 5, 6, 7], 16, true);
     this.animations.add('bear_walk', [0, 1, 2, 3, 4], 16, true);
     this.animations.add('bear_swipe', [5, 6, 7, 8, 9], 16, false);
+    this.animations.add('bear_fart', [9, 10, 11, 12, 11, 12, 11, 10], 16, false);
 
 
     this.game.cursors = this.game.input.keyboard.createCursorKeys();
@@ -44,6 +46,8 @@
       left: this.game.input.keyboard.addKey(Phaser.Keyboard.A),
       right: this.game.input.keyboard.addKey(Phaser.Keyboard.D),
       fire: this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
+      fart: this.game.input.keyboard.addKey(Phaser.Keyboard.F),
+      bee: this.game.input.keyboard.addKey(Phaser.Keyboard.C),
     };
   };
 
@@ -51,6 +55,7 @@
   LD.Player.prototype.constructor = LD.Player;
 
   LD.Player.prototype.update = function() {
+
     this.game.physics.arcade.collide(this, this.gameState.level.platforms);
 
     this.game.physics.arcade.collide(this, this.gameState.level.layer[2]);
@@ -69,6 +74,7 @@
     }, null, this);
 
 
+      console.log(this.facing);
     // this.game.physics.arcade.collide(this, this.gameState.bear);
 
     if (!this.controlDisabled) {
@@ -89,13 +95,14 @@
 
       if (!this.controlDisabled ) {
         if (this.game.controls.left.isDown && this.animationTick === 0) {
+          this.facing = -1;
           if (this.riding) {
             this.animations.play('bear_walk');
           } else {
             this.animations.play('walk');
           }
         } else if (this.game.controls.right.isDown && this.animationTick === 0) {
-
+          this.facing = 1;
         if (this.riding) {
           this.animations.play('bear_walk');
         } else {
@@ -141,7 +148,24 @@
         }
       }
 
+      if (this.game.controls.fart.isDown) {
+         if (this.riding) {
+          this.fart();
+          }
+        }
 
+      if (this.game.controls.bee.isDown) {
+        console.log('BBEEEZZ!!!');
+          var bee = this.gameState.bee.beePool.getFirstExists(false);
+          // spawn at a random location top of the screen
+          if (bee) {
+            bee.reset(this.gameState.player.x, this.gameState.player.y - 50);
+            bee.body.velocity.x = 800 * this.facing;
+            // also randomize the speed
+            // enemy.body.velocity.y = this.game.rnd.integerInRange(500 );
+            bee.play('fly');
+          }
+      }
 
       if (this.game.controls.fire.isDown) {
         if (this.riding) {
@@ -163,6 +187,18 @@
       this.animations.play('bear_swipe');
       this.events.onAnimationComplete.add(function(){
         console.log("complete");
+        this.animationTick = 0;
+      }, this);
+
+   }
+  };
+
+   LD.Player.prototype.fart = function() {
+    if (this.animationTick === 0) {
+      this.animationTick = 1;
+      console.log('Bear Fart!');
+      this.animations.play('bear_fart');
+      this.events.onAnimationComplete.add(function(){
         this.animationTick = 0;
       }, this);
 

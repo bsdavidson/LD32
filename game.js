@@ -34,6 +34,13 @@
 
     update: function() {
       this.level.update();
+
+    this.game.physics.arcade.overlap(this.bee.beePool, this.enemy.enemyPool, function(bee, enemy){
+      enemy.health -= 0.5;
+      bee.health -= 0.01;
+      console.log(enemy.health);
+
+    },null, this);
     }
   };
 }());
