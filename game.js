@@ -10,7 +10,7 @@
     create: function() {
       this.game.world.setBounds(0, 0, 2000, 1500);
 
-
+      this.score = 0;
       this.level = new LD.Level(this);
 
       this.player = new LD.Player(this);

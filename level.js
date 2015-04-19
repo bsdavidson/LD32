@@ -17,15 +17,20 @@
     this.layer[1] = this.map.createLayer('MidGround');
     this.layer[2] = this.map.createLayer('Platform');
     this.layer[2].resizeWorld();
-    // this.layer[1].debug = true;
+    // this.layer[2].debug = true;
     this.layer[1].scrollFactorX = 0.5;
+    this.layer[0].scrollFactorX = 0.2;
 
 
 
     this.game.physics.arcade.enable(this.layer[2], Phaser.Physics.ARCADE, true);
     this.platforms = this.game.make.group();
     this.platforms.enableBody = true;
-    this.map.setCollisionBetween(124,126,true,this.layer[2]);
+
+    this.map.setCollisionBetween(1, 2, true, this.layer[2]);
+    this.map.setCollisionBetween(26, 27, true, this.layer[2]);
+    this.map.setCollisionBetween(51, 52, true, this.layer[2]);
+    this.map.setCollisionBetween(124, 126, true, this.layer[2]);
 
 
 

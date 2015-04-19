@@ -32,9 +32,7 @@
     },
 
     create: function() {
-      console.log('preloader create');
-
-
+      // console.log('preloader create');
       this.state.start('Game');
     }
   };

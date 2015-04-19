@@ -5,17 +5,17 @@
  </tileset>
  <layer name="Background" width="200" height="40">
   <data encoding="base64" compression="zlib">
-   eJztwwENAAAMw6DqmH+hvxBIWDVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVXVf7aBLK4=
+   eJzt08ENhCAQQFHqoA3bsP969rSJ2URCkJEF3uEFD4pzmJ9TShkAAAAAAAAAAAAAAAAAAAAAgp0Fo2eD0fQB9/RBpNl3Sx9Emn239EGkp7s1eg/1QaQefYzcSX0QSR+s5Pjx9D59sJJV+2i9Qx9c6aNufn3sSR918+tjT/qom18je+rZx3k59cEK3uqjdrf0wT+J6uN76oOZ6aP8f33sTR/l/+tjb8fNc4sefeSG90uztHynj/V8ANgIboA=
   </data>
  </layer>
  <layer name="MidGround" width="200" height="40">
   <data encoding="base64" compression="zlib">
-   eJzt00sKw1AMA8AcMPc/T7cpvH5CSWTXM/DINkjWtgEAAAAAAAAAAAAAAAAAAAAAALy2Lx7nyO8/rLbw7vGZ/Po7uws9f0d2vf26C32vyauvKzah92dy6ueuXUzvXka9JHYxuX9Z9ZDexcTe5dRDeg9Tu5dTfekdTO1eTrWlb39y9/KqLX3zkzuXXW3pW5/cs9xqS9/49L7lVlf6rqf3nc6ra253SHcyved0Vt3zu1K6h+kd74dvhXf8ry4ZPgARwxUM
+   eJzt2GEKgzAMhuHcymN4Db3/BcZ+BEpmq42VpPMNPMigrXHrh85FRJYgWlHnBzLSiu4DyEYS9ABkoxXdB5CNJOgByEYrug8gE63oPoBs5E/OAYw0U0V/V3gXSdADAAAAAAAAMIqnonsGAAAAAAAAAADAr92I7gfI5JuJTcgIcIR8AHWbkA+ghnxgBEnQwxPK5ys9Xp27FaKvA3G0Rq65JriuL81FeR+5Mm8T8vFGtRp9nifz0bNnbT7O5u2VOTybvUerRqy/yvP5KPfx2VhPPmxOyMectHrHt+puT+QDWYhzzmp41zpi1/X01+ql532UJx92fd59zUfLO/8oH6Nkyofd7733Dzs/+nfHmD105ko+vBm6k4+yamPKZ57e+wH3j3fQ8s7PmA9btXF3/09cHUs+5qS1FMde2fPRGncnH609Tj7mp1V+9qyTLR+2WmPJB872T1me9Ubko9ZHbz56rylzPmaq6D1d8wF94r6b
   </data>
  </layer>
  <layer name="Platform" width="200" height="40">
   <data encoding="base64" compression="zlib">
-   eJzt1UkOgzAQBED+wV/D13PlEEsEbGZRtVRHoGccK/u2bTsAAAAAAAAAAAAAAAAk8lai54SRLIneA2QxSnQvAAAAAAAAehgluhdEupPRO6JnoZ6nie7/zzzR3ajtTnSlq5mp0D163+RXKbP7Ru/+6TzR3Svtqluu7Ot44RvO+Xe63pPzN2b+1iqmwnndTeWeEZ0zdMiWrndDRETW5jNwXDB69uzX/82V57JbOc8RvKvMZ5W114xdd5pt9TzuR769rN51p9ncj9hub33vC4tQuWI=
+   eJzt1NuKwjAUBdAy3yT4dyP++TwVihgbm8tJJmvDejNpbtv7tm13AAAAAAAAAAAAAAAAAAAAAAAAAABgWjUSvQdorTTR64eWrqRkbM68MJKaGWUdpWuh7d3Uyuh7PptntPuMfmczmeHcWqxP0om+75HMdB6vWbEfvdYefdejmPU8aqx5tUTfWWu3L/V8a7NZMdFnHtmFmn1ZwSOhZOzZPDnjzubcc+X7Ka/JnfdZWe8+6Efab0LOO02NPXr3zZ9Cx5z9tqSHn+Zt+WaPHdnToxfv+pFzxz2N0o+W+yntx96RGvNc1fo//diPnt3Qj//Rj2j6sUY//gAqjH+5
   </data>
  </layer>
 </map>
