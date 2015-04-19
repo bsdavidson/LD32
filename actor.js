@@ -118,7 +118,7 @@
     this.enemyPool.setAll('outOfBoundsKill', true);
     this.enemyPool.setAll('checkWorldBounds', true);
     this.enemyPool.setAll('bounce', 0.3);
-    this.enemyPool.setAll('gravity.y', 500);
+    this.enemyPool.setAll('gravity.y', 700);
 
     // Set the animation for each sprite
     this.enemyPool.forEach(function (enemy) {
@@ -144,7 +144,7 @@
       this.nextEnemyAt = this.game.time.now + this.enemyDelay;
       var enemy = this.enemyPool.getFirstExists(false);
       // spawn at a random location top of the screen
-      enemy.reset(1500, this.gameState.game.world.height - 150 );
+      enemy.reset(this.gameState.player.x + 900, this.gameState.game.world.height - 150 );
       // also randomize the speed
       enemy.body.velocity.y = this.game.rnd.integerInRange(30, 360);
       enemy.play('attack');
@@ -153,7 +153,15 @@
     }
 
     this.enemyPool.forEach(function (enemy) {
-      this.phy.moveToXY(enemy, this.gameState.player.x, this.gameState.player.y, 100);
+      // this.phy.moveToXY(enemy, this.gameState.player.x, enemy.y, 100);
+
+      if (enemy.x > this.gameState.player.x) {
+        enemy.x -= 2;
+        enemy.y += 2;
+        } else {
+        enemy.x += 2;
+         enemy.y += 2;
+      }
        if (enemy.body.deltaX() > 0){
           enemy.scale.x = 1;
         } else {
@@ -168,14 +176,6 @@
       }, null, this);
 
     }, this, 200);
-
-  if (!this.gameState.player.riding) {
-    this.phy.moveToXY(this, this.gameState.player.x, this.gameState.player.y, 100);
-
-  } else {
-    this.phy.moveToXY(this, -this.gameState.player.x, this.gameState.player.y, 100);
-
-  }
 
 
 
