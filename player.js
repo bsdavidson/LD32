@@ -4,7 +4,7 @@
   LD.Player = function(gameState) {
 
     this.animationTick = 0;
-
+    this.fart_ammo = 5;
 
 
     Phaser.Sprite.call(this, gameState.game, 90,
@@ -21,12 +21,15 @@
     this.health = 100;
     this.facing = 1;
 
-
+    this.fart = this.game.add.audio('fart');
     //Assigned for later use
-    this.health_text = this.game.add.text(150, 40, "Health " + this.health);
+    this.health_text = this.game.add.text(100, 40, "Health " + this.health);
+    this.fart_text = this.game.add.text(240, 40, "Farts " + this.fart_ammo);
     //Center the text
     this.health_text.fixedToCamera = true;
     this.health_text.anchor.set(0.5, 0.5);
+    this.fart_text.fixedToCamera = true;
+    this.fart_text.anchor.set(0.5, 0.5);
 
 
     this.body.collideWorldBounds = true;
@@ -61,7 +64,9 @@
     this.game.physics.arcade.collide(this, this.gameState.level.layer[2]);
    // this.game.debug.body(this);
 
-   this.health_text.setText('Health ' + this.health);
+   this.health_text.setText('Health ' + parseInt(this.health, 10));
+   this.fart_text.setText('Farts ' + this.fart_ammo, 10);
+
 
     this.game.physics.arcade.overlap(this, this.gameState.bear, function() {
 
@@ -150,7 +155,7 @@
 
       if (this.game.controls.fart.isDown) {
          if (this.riding) {
-          this.fart();
+            this.fartAction();
           }
         }
 
@@ -193,11 +198,20 @@
    }
   };
 
-   LD.Player.prototype.fart = function() {
+   LD.Player.prototype.fartAction = function() {
     if (this.animationTick === 0) {
       this.animationTick = 1;
-      console.log('Bear Fart!');
+
       this.animations.play('bear_fart');
+      if (this.fart_ammo > 0) {
+        this.fart_ammo -= 1;
+      this.fart.play();
+       this.gameState.enemy.enemyPool.forEach(function (enemy) {
+        enemy.health = 0;
+       }, this, 200);
+        } else {
+          console.log('out');
+        }
       this.events.onAnimationComplete.add(function(){
         this.animationTick = 0;
       }, this);

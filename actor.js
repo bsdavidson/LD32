@@ -73,9 +73,6 @@
 
     this.game.physics.arcade.enable(this);
     this.phy = this.game.physics.arcade;
-
-
-    // this.roar = this.game.add.audio('roar');\\
     this.body.collideWorldBounds = false;
     // this.body.bounce(0.50);
 

@@ -30,7 +30,7 @@
       this.load.tilemap('platforms', 'assets/tilemap_t.json', null, Phaser.Tilemap.TILED_JSON);
 
       // Sounds
-      // this.load.audio('fly_sound', 'assets/fly.ogg');
+       this.load.audio('fart', 'assets/fart.ogg');
 
     },
 
