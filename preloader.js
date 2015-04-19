@@ -16,8 +16,10 @@
 
       // Sprite Sheets
       this.load.spritesheet('bear', 'assets/bear.png', 128, 78);
-      this.load.spritesheet('player', 'assets/player.png', 52, 44);
+      this.load.spritesheet('player_bear', 'assets/bear_rider.png', 128, 104);
+      this.load.spritesheet('player', 'assets/player.png', 32, 44);
       this.load.spritesheet('bee', 'assets/bee.png', 32, 22);
+      this.load.spritesheet('enemy1', 'assets/monsanto.png', 48, 60);
 
 
       // Tile Map

@@ -16,10 +16,13 @@
       this.player = new LD.Player(this);
       this.bear = new LD.Bear(this);
       this.bee = new LD.Bee(this);
+      this.enemy = new LD.Enemy(this);
 
       this.level.add();
       this.game.world.add(this.player);
       this.game.world.add(this.bear);
+      this.game.world.add(this.enemy);
+      this.game.world.add(this.bee);
       this.game.world.add(this.bee);
 
       this.game.camera.follow(this.player);
