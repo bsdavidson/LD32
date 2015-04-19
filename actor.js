@@ -148,20 +148,11 @@
       // also randomize the speed
       enemy.body.velocity.y = this.game.rnd.integerInRange(30, 360);
       enemy.play('attack');
-
-
     }
 
     this.enemyPool.forEach(function (enemy) {
-      // this.phy.moveToXY(enemy, this.gameState.player.x, enemy.y, 100);
+      this.phy.moveToXY(enemy, this.gameState.player.x, enemy.y, 100);
 
-      if (enemy.x > this.gameState.player.x) {
-        enemy.x -= 2;
-        enemy.y += 2;
-        } else {
-        enemy.x += 2;
-         enemy.y += 2;
-      }
        if (enemy.body.deltaX() > 0){
           enemy.scale.x = 1;
         } else {
