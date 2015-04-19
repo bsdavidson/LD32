@@ -11,6 +11,7 @@
       // Load sprites
      this.load.image('floor', 'assets/floor.png');
      this.load.image('tiles', 'assets/tileset.png');
+     this.load.image('blood_drop', 'assets/blood_drop.png');
 
 
 

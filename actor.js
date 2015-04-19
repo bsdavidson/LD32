@@ -4,11 +4,12 @@
 
   LD.Bear = function(gameState) {
     Phaser.Sprite.call(this, gameState.game, 300,
-      gameState.game.world.height / 2, 'bear');
+      gameState.game.world.height - 50, 'bear');
 
     this.gameState = gameState;
 
     this.game.physics.arcade.enable(this);
+    this.phy = this.game.physics.arcade;
 
     this.roar = this.game.add.audio('roar');
 
@@ -62,6 +63,7 @@
     this.gameState = gameState;
 
     this.game.physics.arcade.enable(this);
+    this.phy = this.game.physics.arcade;
     // this.roar = this.game.add.audio('roar');\\
     this.body.collideWorldBounds = false;
     // this.body.bounce(0.50);
@@ -86,38 +88,47 @@
 
     }
 
-    this.game.physics.arcade.moveToXY(this, Math.round(this.gameState.player.x - 100), Math.round(this.gameState.player.y - 130) , 200);
+    if (this.phy.distanceToXY(this, this.gameState.player.x, this.gameState.player.y) > 150 ) {
+    this.phy.moveToXY(this, Math.round(this.gameState.player.x - 50), Math.round(this.gameState.player.y - 100) , 300);
+  }
   };
 
 
 
 
   LD.Enemy = function(gameState) {
-   Phaser.Sprite.call(this, gameState.game, 300,
-      gameState.game.world.height - 200, 'enemy1');
+    Phaser.Sprite.call(this, gameState.game, 300,
+     gameState.game.world.height - 200, 'enemy1');
 
-  this.gameState = gameState;
+    this.gameState = gameState;
 
     this.game.physics.arcade.enable(this);
+    this.phy = this.game.physics.arcade;
 
-    this.roar = this.game.add.audio('roar');
+    this.emitter = this.game.add.emitter(0, 0, 100);
+    this.emitter.makeParticles('blood_drop');
+    this.emitter.gravity = 200;
 
-    this.body.collideWorldBounds = true;
-    this.body.bounce.y = 0.0;
-    this.body.bounce.x = 0.0;
-    this.body.gravity.y = 700;
-    this.body.drag.x = 100;
-    this.body.drag.y = 100;
+    this.enemyPool = this.game.add.group();
+    this.enemyPool.enableBody = true;
+    this.enemyPool.physicsBodyType = Phaser.Physics.ARCADE;
+    this.enemyPool.createMultiple(50, 'enemy1');
+    this.enemyPool.setAll('anchor.x', 0.5);
+    this.enemyPool.setAll('anchor.y', 0.5);
+    this.enemyPool.setAll('outOfBoundsKill', true);
+    this.enemyPool.setAll('checkWorldBounds', true);
+    this.enemyPool.setAll('bounce', 0.3);
+    this.enemyPool.setAll('gravity.y', 500);
 
+    // Set the animation for each sprite
+    this.enemyPool.forEach(function (enemy) {
+      enemy.animations.add('attack', [ 0, 1, 2, 3, 4, 5, 6 ], 20, true);
+      enemy.animations.add('die', [ 7, 8, 9, 10 ], 20, false);
 
+    }, this.phy);
 
-
-
-
-
-    // this.roar = this.game.add.audio('roar');\\
-    // this.body.collideWorldBounds = false;
-    // this.body.bounce(0.50);
+    this.nextEnemyAt = 0;
+    this.enemyDelay = 4000;
 
   };
 
@@ -126,14 +137,43 @@
   LD.Enemy.constructor = LD.Enemy;
 
   LD.Enemy.prototype.update = function() {
-    this.game.physics.arcade.collide(this, this.gameState.level.layer[2]);
+    this.phy.collide(this, this.gameState.level.layer[2]);
+    this.phy.collide(this.enemyPool, this.gameState.level.layer[2]);
 
-    if (!this.gameState.player.riding) {
+    if (this.nextEnemyAt < this.game.time.now && this.enemyPool.countDead() > 0) {
+      this.nextEnemyAt = this.game.time.now + this.enemyDelay;
+      var enemy = this.enemyPool.getFirstExists(false);
+      // spawn at a random location top of the screen
+      enemy.reset(1500, this.gameState.game.world.height - 150 );
+      // also randomize the speed
+      enemy.body.velocity.y = this.game.rnd.integerInRange(30, 360);
+      enemy.play('attack');
 
-    this.game.physics.arcade.moveToXY(this, this.gameState.player.x, this.gameState.player.y, 100);
+
+    }
+
+    this.enemyPool.forEach(function (enemy) {
+      this.phy.moveToXY(enemy, this.gameState.player.x, this.gameState.player.y, 100);
+       if (enemy.body.deltaX() > 0){
+          enemy.scale.x = 1;
+        } else {
+          enemy.scale.x = -1;
+        }
+
+      this.phy.overlap(enemy, this.gameState.player, function() {
+        if (this.game.controls.fire.isDown) {
+          this.explode(enemy.x, enemy.y);
+          enemy.kill();
+        }
+      }, null, this);
+
+    }, this, 200);
+
+  if (!this.gameState.player.riding) {
+    this.phy.moveToXY(this, this.gameState.player.x, this.gameState.player.y, 100);
 
   } else {
-        this.game.physics.arcade.moveToXY(this, -this.gameState.player.x, this.gameState.player.y, 100);
+    this.phy.moveToXY(this, -this.gameState.player.x, this.gameState.player.y, 100);
 
   }
 
@@ -143,7 +183,11 @@
 
   };
 
-
+  LD.Enemy.prototype.explode = function(x, y) {
+    this.emitter.x = x;
+    this.emitter.y = y;
+    this.emitter.start(true, 2000, null, 200);
+  };
 
 
 
