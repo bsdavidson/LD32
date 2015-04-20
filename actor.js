@@ -219,7 +219,9 @@
 
 
       this.phy.overlap(enemy, this.gameState.player, function () {
-        this.gameState.player.health -= 0.2;
+        if (enemy.health > 0) {
+          this.gameState.player.health -= 0.2;
+        }
         if (this.game.controls.fire.isDown) {
           enemy.health -= 30;
           if (enemy.health < 0) {
