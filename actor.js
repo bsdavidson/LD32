@@ -169,6 +169,9 @@
   LD.Enemy.constructor = LD.Enemy;
 
   LD.Enemy.prototype.update = function () {
+
+    // console.log((this.gameState.player.body.x) + innerWidth / 2);
+
     this.phy.collide(this, this.gameState.level.layer[2]);
     this.phy.collide(this.enemyPool, this.gameState.level.layer[2]);
     this.phy.collide(this.emitter, this.gameState.level.layer[2]);
@@ -178,7 +181,7 @@
       this.nextEnemyAt = this.game.time.now + this.enemyDelay;
       var enemy = this.enemyPool.getFirstExists(false);
       // spawn at a random location top of the screen
-      enemy.reset((this.game.camera.position.x * 2) + 250, 100);
+      enemy.reset((this.gameState.player.body.x) + window.innerWidth + 300, 100);
       enemy.health = 100;
       enemy.alive = true;
       // also randomize the speed

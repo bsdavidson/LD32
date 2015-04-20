@@ -56,10 +56,10 @@
 
     this.game.cursors = this.game.input.keyboard.createCursorKeys();
     this.game.controls = {
-      up: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
-      down: this.game.input.keyboard.addKey(Phaser.Keyboard.S),
-      left: this.game.input.keyboard.addKey(Phaser.Keyboard.A),
-      right: this.game.input.keyboard.addKey(Phaser.Keyboard.D),
+      up: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
+      down: this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
+      left: this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
+      right: this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
       fire: this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
       fart: this.game.input.keyboard.addKey(Phaser.Keyboard.F),
       bee: this.game.input.keyboard.addKey(Phaser.Keyboard.C),
@@ -121,7 +121,7 @@
       }
 
       if (!this.controlDisabled ) {
-        if (this.game.controls.left.isDown && this.animationTick === 0) {
+        if ((this.game.controls.left.isDown) && this.animationTick === 0) {
           this.facing = -1;
           if (this.riding) {
             this.animations.play('bear_walk');
