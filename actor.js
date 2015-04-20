@@ -137,7 +137,7 @@
     this.emitter = this.game.add.emitter(0, 0, 20);
     this.emitter.makeParticles(['blood_drop', 'gib_leg', 'gib_case']);
     this.emitter.gravity = 200;
-    this.emitter.setAlpha(1, 0, 2000);
+     this.emitter.setAlpha(1, 0, 1200);
 
     this.emitterPool = this.game.add.group();
 
@@ -258,7 +258,7 @@
   LD.Enemy.prototype.explode = function (x, y) {
     this.emitter.x = x;
     this.emitter.y = y;
-    this.emitter.start(true, 4000, null, 100);
+    this.emitter.start(true, 1200, null, 100);
   };
 
 }());
