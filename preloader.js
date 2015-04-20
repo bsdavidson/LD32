@@ -16,6 +16,9 @@
      this.load.image('gib_head', 'assets/gib_head.png');
      this.load.image('gib_leg', 'assets/gib_leg.png');
      this.load.image('gib_case', 'assets/gib_case.png');
+     this.load.image('title_screen', 'assets/title_screen.png');
+     this.load.image('game_won', 'assets/game_won.png');
+     this.load.image('game_over', 'assets/game_over.png');
 
 
 
@@ -32,12 +35,21 @@
 
       // Sounds
        this.load.audio('fart', 'assets/fart.ogg');
+       this.load.audio('beees', 'assets/beees.ogg');
+       this.load.audio('buzz', 'assets/buzz.ogg');
+       this.load.audio('hit_sound', 'assets/hit_sound.ogg');
+       this.load.audio('roar', 'assets/roar.ogg');
+       this.load.audio('swipe', 'assets/swipe.ogg');
+       this.load.audio('enemy_death', 'assets/enemy_death.ogg');
+       this.load.audio('player_death', 'assets/player_death.ogg');
+
+
 
     },
 
     create: function() {
       // console.log('preloader create');
-      this.state.start('Game');
+      this.state.start('Menu');
     }
   };
 }());

@@ -11,6 +11,8 @@
       this.game.world.setBounds(0, 0, 2000, 1500);
 
       this.score = 0;
+
+
       this.level = new LD.Level(this);
 
       this.player = new LD.Player(this);
@@ -38,8 +40,6 @@
     this.game.physics.arcade.overlap(this.bee.beePool, this.enemy.enemyPool, function(bee, enemy){
       enemy.health -= 0.5;
       bee.health -= 0.01;
-      console.log(enemy.health);
-
     },null, this);
     }
   };

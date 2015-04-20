@@ -12,6 +12,7 @@
 
     this.roar = this.game.add.audio('roar');
 
+
     this.body.collideWorldBounds = true;
     this.body.bounce.y = 0.0;
     this.body.bounce.x = 0.0;
@@ -130,6 +131,9 @@
     // this.game.physics.arcade.enable(this);
     this.phy = this.game.physics.arcade;
 
+    this.e_death = this.game.add.audio('enemy_death');
+    this.hit_sound = this.game.add.audio('hit_sound');
+
     this.emitter = this.game.add.emitter(0, 0, 20);
     this.emitter.makeParticles(['blood_drop', 'gib_leg', 'gib_case']);
     this.emitter.gravity = 200;
@@ -140,13 +144,13 @@
     this.enemyPool = this.game.add.group();
     this.enemyPool.enableBody = true;
     this.enemyPool.physicsBodyType = Phaser.Physics.ARCADE;
-    this.enemyPool.createMultiple(60, 'enemy1');
+    this.enemyPool.createMultiple(120, 'enemy1');
     this.enemyPool.setAll('anchor.x', 0.5);
     this.enemyPool.setAll('anchor.y', 0.5);
-    this.enemyPool.setAll('outOfBoundsKill', true);
+    this.enemyPool.setAll('outOfBoundsKill', false);
     this.enemyPool.setAll('checkWorldBounds', true);
     this.enemyPool.setAll('bounce', 0.3);
-    this.enemyPool.setAll('body.gravity.y', 1900);
+    this.enemyPool.setAll('body.gravity.y', 900);
     this.phy.enable(this.enemyPool);
 
     // Set the animation for each sprite
@@ -157,7 +161,7 @@
     }, this);
 
     this.nextEnemyAt = 0;
-    this.enemyDelay = 2000;
+    this.enemyDelay = 1000;
 
   };
 
@@ -174,7 +178,7 @@
       this.nextEnemyAt = this.game.time.now + this.enemyDelay;
       var enemy = this.enemyPool.getFirstExists(false);
       // spawn at a random location top of the screen
-      enemy.reset((this.game.camera.position.x * 2) + 50, 0);
+      enemy.reset((this.game.camera.position.x * 2) + 250, 100);
       enemy.health = 100;
       enemy.alive = true;
       // also randomize the speed
@@ -218,8 +222,9 @@
           if (enemy.health < 0) {
             this.explode(enemy.x, enemy.y);
             enemy.kill();
+            this.e_death.play();
           } else {
-            console.log('POW');
+            this.hit_sound.play();
             enemy.body.velocity.x = 400;
             enemy.body.velocity.y = -300;
           }
@@ -229,11 +234,12 @@
 
       if (enemy.health <= 0 && enemy.alive) {
         enemy.alive = false;
-        console.log("DIE BITCH");
+
         enemy.animations.play('die');
+        this.e_death.play();
         enemy.body.velocity.x = 0;
         enemy.events.onAnimationComplete.add(function(){
-        console.log("complete");
+
           enemy.kill();
       }, this);
 
@@ -241,8 +247,6 @@
 
 
     }, this, 200);
-
-
 
     // console.log(this.gameState.player.y, this.gameState.player.x);
 

@@ -27,6 +27,13 @@
     this.fart_emitter.setAlpha(0.5, 0, 2000);
 
     this.fart = this.game.add.audio('fart');
+    this.p_death = this.game.add.audio('player_death');
+    this.swipe_sound = this.game.add.audio('swipe');
+    this.hit_sound = this.game.add.audio('hitsound');
+    this.buzz = this.game.add.audio('buzz');
+
+
+
     //Assigned for later use
     this.health_text = this.game.add.text(100, 40, "Health " + this.health);
     this.fart_text = this.game.add.text(240, 40, "Farts " + this.fart_ammo);
@@ -64,6 +71,11 @@
 
   LD.Player.prototype.update = function() {
 
+    if (this.health <= 0) {
+      this.p_death.play();
+      this.game.state.start('GameOver');
+    }
+
     this.game.physics.arcade.collide(this, this.gameState.level.platforms);
 
     this.game.physics.arcade.collide(this, this.gameState.level.layer[2]);
@@ -83,8 +95,13 @@
         this.height = 104;
     }, null, this);
 
+      // console.log(this.body.x);
 
-      console.log(this.facing);
+      if (this.body.x > 6200) {
+        this.game.state.start('GameWon');
+      }
+
+
     // this.game.physics.arcade.collide(this, this.gameState.bear);
 
     if (!this.controlDisabled) {
@@ -165,12 +182,13 @@
         }
 
       if (this.game.controls.bee.isDown) {
-        console.log('BBEEEZZ!!!');
           var bee = this.gameState.bee.beePool.getFirstExists(false);
           // spawn at a random location top of the screen
           if (bee) {
+            this.buzz.play();
             bee.reset(this.gameState.player.x, this.gameState.player.y - 50);
             bee.body.velocity.x = 800 * this.facing;
+            bee.body.velocity.y = 400;
             // also randomize the speed
             // enemy.body.velocity.y = this.game.rnd.integerInRange(500 );
             bee.play('fly');
@@ -181,7 +199,6 @@
         if (this.riding) {
           this.swipe();
         } else {
-          console.log('FREEZE');
           this.frame = 8;
         }
 
@@ -193,10 +210,9 @@
    LD.Player.prototype.swipe = function() {
     if (this.animationTick === 0) {
       this.animationTick = 1;
-      console.log('Bear Swipe!');
+      this.swipe_sound.play();
       this.animations.play('bear_swipe');
       this.events.onAnimationComplete.add(function(){
-        console.log("complete");
         this.animationTick = 0;
       }, this);
 
@@ -226,7 +242,13 @@
   };
 
   LD.Player.prototype.fart_bubbles = function (x, y) {
-    this.fart_emitter.x = x - 50;
+    var pos;
+    if(this.facing === 1) {
+      pos = (x - 50);
+    } else {
+      pos = x + 40;
+    }
+    this.fart_emitter.x = pos;
     this.fart_emitter.y = y - 30;
     this.fart_emitter.start(true, 2000, null, 100);
   };
