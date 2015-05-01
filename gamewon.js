@@ -15,5 +15,4 @@
       this.state.start('Menu');
     }
   };
-
 }());
